@@ -1,18 +1,5 @@
 package view;
 
-<<<<<<< HEAD
-import core.Helper;
-import entity.User;
-
-import javax.swing.*;
-import java.awt.*;
-
-public class DashboardUI extends JFrame {
-    private JPanel container;
-    private User user;
-    public DashboardUI(User user) {
-        this.user = user;
-=======
 import business.CustomerController;
 import core.Helper;
 import entity.Customer;
@@ -52,7 +39,6 @@ public class DashboardUI extends JFrame {
     public DashboardUI(User user) {
         this.user = user;
         this.customerController = new CustomerController();
->>>>>>> b7fe936 (first commit)
         if (user==null){
             Helper.showMsg("error");
             dispose();
@@ -66,9 +52,6 @@ public class DashboardUI extends JFrame {
         this.setLocation(x,y);
         this.setVisible(true);
 
-<<<<<<< HEAD
-        System.out.println(this.user.toString());
-=======
     this.lbl_welcome.setText("Hoşgeldin:  "+this.user.getName());
         this.btn_logout.addActionListener(e-> {
             dispose();
@@ -123,6 +106,5 @@ public class DashboardUI extends JFrame {
         // Sütun düzenlemeleri
         this.tbl_customer.getColumnModel().getColumn(0).setPreferredWidth(50); // ID sütunu genişliği
         this.tbl_customer.setEnabled(true);
->>>>>>> b7fe936 (first commit)
     }
 }
