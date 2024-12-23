@@ -6,15 +6,16 @@ public class Customer {
     private String phone;
     private String mail;
     private String address;
+    private TYPE type;
 
     @Override
     public String toString() {
         return "Customer{" +
-                "address='" + address + '\'' +
-                ", id=" + id +
+                "  id=" + id +
                 ", name='" + name + '\'' +
                 ", phone='" + phone + '\'' +
                 ", mail='" + mail + '\'' +
+                ",address='" + address + '\'' +
                 ", type=" + type +
                 '}';
     }
@@ -71,7 +72,7 @@ public class Customer {
         this.type = type;
     }
 
-    private TYPE type;
+
 
     public enum TYPE {
         PERSON,

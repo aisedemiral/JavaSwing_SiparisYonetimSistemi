@@ -8,14 +8,12 @@ import entity.User;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.util.ArrayList;
 
 public class DashboardUI extends JFrame {
     private JPanel container;
+    private JTabbedPane tab_menu;
     private JPanel pnl_top;
     private JLabel lbl_welcome;
     private JButton btn_logout;
@@ -26,6 +24,9 @@ public class DashboardUI extends JFrame {
     private JPanel pnl_customer_filter;
     private JTextField fld_f_customer_name;
     private JComboBox cmb_customer_type;
+    private JLabel lbl_f_customer_type;
+    private JButton btn_customer_reset;
+
     private JButton btn_customer_filter;
     private JButton btn_customer_filter_reset;
     private JButton btn_customer_new;
@@ -59,8 +60,22 @@ public class DashboardUI extends JFrame {
         });
         loadCustomerTable(null);
         loadCustomerPopupMenu();
+        loadCustomerButtonEvent();
+
 
     }
+
+    private void loadCustomerButtonEvent(){
+        this.btn_customer_new.addActionListener(e->{
+            CustomerUI customerUI=new CustomerUI(new Customer());
+            customerUI.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                loadCustomerTable(null);                }
+            });
+        });
+    }
+
     private void loadCustomerPopupMenu() {
 
         this.tbl_customer.addMouseListener(new MouseAdapter() {
@@ -73,10 +88,28 @@ public class DashboardUI extends JFrame {
 
         this.popup_customer.add("Güncelle").addActionListener(e->{
             int selecteId= (int) tbl_customer.getValueAt(tbl_customer.getSelectedRow(),0);
-            System.out.println(selecteId);
-       });
+            Customer editedCustomer=this.customerController.getById(selecteId);
+            CustomerUI customerUI=new CustomerUI(editedCustomer);
+            customerUI.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    loadCustomerTable(null);
+                }
+            });
+
+        });
         this.popup_customer.add("Sil").addActionListener(e->{
-            System.out.println("Sil Tıklandı");
+            int selecteId= (int) tbl_customer.getValueAt(tbl_customer.getSelectedRow(),0);
+            if (Helper.confirm("sure")){
+                if (this.customerController.delete(selecteId)){
+                    Helper.showMsg("done");
+                    loadCustomerTable(null);
+                }else{
+                    Helper.showMsg("error");
+                }
+            }
+
+
         });
         this.tbl_customer.setComponentPopupMenu(this.popup_customer);
     }
@@ -92,19 +125,19 @@ public class DashboardUI extends JFrame {
 
         // Veriyi ekle
         for (Customer customer : customers) {
-            Object[] row = {
+            Object[] rowObject = {
                     customer.getId(),
                     customer.getName(),
-                    customer.getType().name(),
+                    customer.getType(),
                     customer.getPhone(),
                     customer.getMail(),
                     customer.getAddress()
             };
-            model.addRow(row);
+            this.tmdl_customer.addRow(rowObject);
         }
 
-        // Sütun düzenlemeleri
-        this.tbl_customer.getColumnModel().getColumn(0).setPreferredWidth(50); // ID sütunu genişliği
+
+        this.tbl_customer.getColumnModel().getColumn(0).setPreferredWidth(50);
         this.tbl_customer.setEnabled(true);
     }
 }
