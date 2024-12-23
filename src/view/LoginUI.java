@@ -45,8 +45,8 @@ public class LoginUI extends JFrame {
                     Helper.showMsg("Girdiğiniz bilgilere göre kullanıcı bulunamadı.");
                 }
                 else {
-                    this.dispose();
                     DashboardUI dashboardUI=new DashboardUI(user);
+                    this.dispose();
                 }
             }
         });
